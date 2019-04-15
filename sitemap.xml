@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/</loc>
+    <lastmod>2019-04-03T19:51:33-06:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/demos/</loc>
+    <lastmod>2019-04-03T19:51:33-06:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/demos/drifting-cards/</loc>
+    <lastmod>2019-04-03T19:51:33-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/posts/</loc>
+    <lastmod>2019-03-25T16:47:27-06:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/posts/test/</loc>
+    <lastmod>2019-03-25T16:47:27-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/dnds/</loc>
+    <lastmod>2019-03-25T16:46:11-06:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/dnds/teem/</loc>
+    <lastmod>2019-03-25T16:46:11-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/docs/</loc>
+    <lastmod>2019-03-17T15:46:58-06:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/docs/my-first-post/</loc>
+    <lastmod>2019-03-17T15:46:58-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/resume/</loc>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/series/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.demogorgonzola.com/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

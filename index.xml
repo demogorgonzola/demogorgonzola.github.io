@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Abyss 88</title>
+    <link>http://www.demogorgonzola.com/</link>
+    <description>Recent content on Abyss 88</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 03 Apr 2019 19:51:33 -0600</lastBuildDate>
+    
+	<atom:link href="http://www.demogorgonzola.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Drifting Card Algorithm</title>
+      <link>http://www.demogorgonzola.com/demos/drifting-cards/</link>
+      <pubDate>Wed, 03 Apr 2019 19:51:33 -0600</pubDate>
+      
+      <guid>http://www.demogorgonzola.com/demos/drifting-cards/</guid>
+      <description>.entry-content::after { /* keep floating content in flow, have div respond */content: &#34;&#34;;clear: both;display: table;}#demo {display: inline;float: right;}Aim: To have cards drift to a predefined grid point while under the criteria of:Have no crossing paths</description>
+    </item>
+    
+    <item>
+      <title>Test</title>
+      <link>http://www.demogorgonzola.com/posts/test/</link>
+      <pubDate>Mon, 25 Mar 2019 16:47:27 -0600</pubDate>
+      
+      <guid>http://www.demogorgonzola.com/posts/test/</guid>
+      <description>wondering if this works</description>
+    </item>
+    
+    <item>
+      <title>Teem, &#34;Tiamat&#39;s&#34; Signmaker</title>
+      <link>http://www.demogorgonzola.com/dnds/teem/</link>
+      <pubDate>Mon, 25 Mar 2019 16:46:11 -0600</pubDate>
+      
+      <guid>http://www.demogorgonzola.com/dnds/teem/</guid>
+      <description>console.log(&#34;hi&#34;)  Teem2&amp;rsquo;7&amp;rdquo; ; 31lbs ; NG
+  Str→11Dex→18Con→16Int→10Wis→14Cha→16document.currentScript.parentElement.setAttribute(&#34;style&#34;,&#34;width:&#34;+packContainer()+&#34;px;&#34;);   PersuasionDeceptionInvestigationSurvivaldocument.currentScript.parentElement.setAttribute(&#34;style&#34;,&#34;width:&#34;+packContainer()+&#34;px;&#34;);   CommonDraconicGoblindocument.currentScript.parentElement.setAttribute(&#34;style&#34;,&#34;width:&#34;+packContainer()+&#34;px;&#34;);   Painters Suppliesdocument.currentScript.parentElement.setAttribute(&#34;style&#34;,&#34;width:&#34;+packContainer()+&#34;px;&#34;);   PrestidigitationFrostbiteFaerie FireSleepdocument.currentScript.parentElement.setAttribute(&#34;style&#34;,&#34;width:&#34;+packContainer()+&#34;px;&#34;);   Teem started life in a cold war, his tribe driven far beneath the earth. When his tribe was gifted a reincarnation of Tiamat - Dogmak, the languid - they lashed out with religious vigor to protect her. Near the surface again, Teem built signs no longer tricking Goblin scouts, but instead helping pilgrims traveling to Dogmaks birth-site.</description>
+    </item>
+    
+    <item>
+      <title>My First Post</title>
+      <link>http://www.demogorgonzola.com/docs/my-first-post/</link>
+      <pubDate>Sun, 17 Mar 2019 15:46:58 -0600</pubDate>
+      
+      <guid>http://www.demogorgonzola.com/docs/my-first-post/</guid>
+      <description>Hi this is testing</description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>http://www.demogorgonzola.com/resume/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.demogorgonzola.com/resume/</guid>
+      <description>.entry-content::after { /* keep floating content in flow, have div respond */content: &#34;&#34;;clear: both;display: table;}.entry-content ul {list-style-type: circle;}.entry-content p {margin: 0px;}.entry-content h1, .entry-content h2,.entry-content h3, .entry-content h4,.entry-content h5, .entry-content h6 ::after {margin-top: 0px;font-size: 1em;}h3, h4, h5, h6 {display: inline;}.important {font-weight: bold;}.subtext {font-style: italic;}.right {display: inline;float: right;}.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Abyss 88</title>
+    <link>http://www.demogorgonzola.com/posts/</link>
+    <description>Recent content in Posts on Abyss 88</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 25 Mar 2019 16:47:27 -0600</lastBuildDate>
+    
+	<atom:link href="http://www.demogorgonzola.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Test</title>
+      <link>http://www.demogorgonzola.com/posts/test/</link>
+      <pubDate>Mon, 25 Mar 2019 16:47:27 -0600</pubDate>
+      
+      <guid>http://www.demogorgonzola.com/posts/test/</guid>
+      <description>wondering if this works</description>
+    </item>
+    
+  </channel>
+</rss>
