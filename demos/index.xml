@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Demos on Abyss 88</title>
-    <link>http://www.demogorgonzola.com/demos/</link>
+    <link>https://demogorgonzola.io/demos/</link>
     <description>Recent content in Demos on Abyss 88</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 03 Apr 2019 19:51:33 -0600</lastBuildDate>
     
-	<atom:link href="http://www.demogorgonzola.com/demos/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://demogorgonzola.io/demos/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Drifting Card Algorithm</title>
-      <link>http://www.demogorgonzola.com/demos/drifting-cards/</link>
+      <link>https://demogorgonzola.io/demos/drifting-cards/</link>
       <pubDate>Wed, 03 Apr 2019 19:51:33 -0600</pubDate>
       
-      <guid>http://www.demogorgonzola.com/demos/drifting-cards/</guid>
-      <description>.entry-content::after { /* keep floating content in flow, have div respond */content: &#34;&#34;;clear: both;display: table;}#demo {display: inline;float: right;}Aim: To have cards drift to a predefined grid point while under the criteria of:Have no crossing paths</description>
+      <guid>https://demogorgonzola.io/demos/drifting-cards/</guid>
+      <description>  .entry-content::after { /* keep floating content in flow, have div respond */ content: &#34;&#34;; clear: both; display: table; } #demo { display: inline; float: right; }     Aim: To have cards drift to a predefined grid point while under the criteria of: Have no crossing paths </description>
     </item>
     
   </channel>

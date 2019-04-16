@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Docs on Abyss 88</title>
-    <link>http://www.demogorgonzola.com/docs/</link>
+    <link>https://demogorgonzola.io/docs/</link>
     <description>Recent content in Docs on Abyss 88</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sun, 17 Mar 2019 15:46:58 -0600</lastBuildDate>
     
-	<atom:link href="http://www.demogorgonzola.com/docs/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://demogorgonzola.io/docs/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>My First Post</title>
-      <link>http://www.demogorgonzola.com/docs/my-first-post/</link>
+      <link>https://demogorgonzola.io/docs/my-first-post/</link>
       <pubDate>Sun, 17 Mar 2019 15:46:58 -0600</pubDate>
       
-      <guid>http://www.demogorgonzola.com/docs/my-first-post/</guid>
+      <guid>https://demogorgonzola.io/docs/my-first-post/</guid>
       <description>Hi this is testing</description>
     </item>
     
