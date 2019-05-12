@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Abyss 88</title>
+    <title>9th lvl Truestrike</title>
     <link>https://demogorgonzola.io/</link>
-    <description>Recent content on Abyss 88</description>
+    <description>Recent content on 9th lvl Truestrike</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 03 Apr 2019 19:51:33 -0600</lastBuildDate>
     
@@ -53,7 +53,14 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://demogorgonzola.io/resume/</guid>
-      <description>.entry-content::after { /* keep floating content in flow, have div respond */ content: &#34;&#34;; clear: both; display: table; } .entry-content ul { list-style-type: circle; } .entry-content p { margin: 0px; } .entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 ::after { margin-top: 0px; font-size: 1em; } h3, h4, h5, h6 { display: inline; } .important { font-weight: bold; } .subtext { font-style: italic; } .right { display: inline; float: right; } .</description>
+      <description>Objective ===
+Rapidly produce iterative solutions for any kind of software through meticulous research and decisive strategy.
+======
+Education ===
+Colorado State University December 2014  Bachelors of Science in Computer Science, minor in Mathematics
+(Major: 3.0, Minor: 3.4) ======
+Experience ===
+Conscious Cleanse Jun - Nov 2018 RaddCreative, Fort Collins, Colorado   Subscription-based Checkout Solution backed by a Ember-based frontend and processed though a WooCommerce server module. Site-wide Journaling Widget built with an in-house version of a theoretical Ember feature, Routable Components.</description>
     </item>
     
   </channel>

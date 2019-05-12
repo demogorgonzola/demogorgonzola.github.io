@@ -1,22 +1,71 @@
-//epsilon equality funcs
+/*
+packing.js - Efficient/Experimental Packing Algorithms
+------------------------------------------------------
+What is the most efficient width a container can pack it's elements under the
+constraints that...
+  - Elements are atomic
+  - Elements retain their order
+  - Container height is immutable
+?
+
+Algorithms under these conditions have the strong possibility of being greedy.
+Reasoned since the first obvious, though aproximal solution, is to do a binary
+search between the non-atomic optimal width and the given container width with
+a non-decimal delta threshold (1px).
+
+Notes:
+- Some elements can surpass the given container width and will therefore
+surpass the shortest possible width. This case only appears when the a screen
+is too small to display a Element atomically. This can considered undefined
+behavior, but making the algorithm more robust may be worthwhile.
+- The number of rows under the given width, i.e. a function of height, is
+present in all current solutions and may be integral all solution, but hasn't
+been proven to be required.
+ */
+
+//epsilon equals
 function equalEnough(a,b) {
   return Math.abs(a-b) < Number.EPSILON;
 }
 
+//epsilon greater-than
 function greaterEnough(a,b) {
   return (a-b) > Number.EPSILON;
 }
 
+//epsilon lesser-than
 function lesserEnough(a,b) {
   return (a-b) < -Number.EPSILON;
 }
 
-//quick extract
-function extractPropertyValue(element, property) {
-  return parseFloat(window.getComputedStyle(element, null).getPropertyValue(property).match(/\d+/));
+/**
+ * extract the actual property number of a DOM element
+ *
+ * Note: used mostly to extract px values, super weak, needs a fix later
+ *
+ * @param  {DOM Element} element  DOM element
+ * @param  {String}      property property of the DOM element
+ * @return {Number}               DOM element property numerical value
+ */
+function extractPropertyNumber(element, property) {
+  return parseFloat(
+    window
+    .getComputedStyle(element, null)
+    .getPropertyValue(property)
+    .match(/\d+/)
+  );
 }
 
-
+/**
+ * the minimum number of rows a collection of ordered widths can fit in given a
+ * container width
+ *
+ * O(widths.length)
+ *
+ * @param  {Number[]} widths          widths of adjacent container widths
+ * @param  {Number}   containerWidth  width of the container
+ * @return {Number}                   the minimum number of rows
+ */
 function minRows(widths, containerWidth) {
   let rowWidth = 0;
 
@@ -30,58 +79,128 @@ function minRows(widths, containerWidth) {
   }, 1);
 }
 
-//Pack the given number of rows backwards
-//O(n)
-//Incorrect, suffers from local peaking
-function backwardsWidthPacker(widths, containerWidth) {
-  let rows = minRows(widths, containerWidth);
+/**
+ * Binary search between the optimistic non-atomic width and the given
+ * container width under a delta threshold of 1px.
+ *
+ * O(widths.length * log(containerWidth - optimisticWidth))
+ * - optimisticWidth = sum(widths) / minRows(widths, containerWidth)
+ *
+ * Note:
+ * This may be the fastest algorithm to find the the optimal packing width;
+ * however, this is still aproximal. Though for anything practical this may be
+ * the best choice.
+ *
+ * @param  {Number[]} widths              widths of adjacent container widths
+ * @param  {Number}   containerWidth      width of the container
+ * @param  {Number}   [deltaThreshold=1]  threshold when to stop seaching, in px
+ * @return {Number}                       the minimum number of rows
+ */
+function aproximalBinarySearch(widths, containerWidth, deltaThreshold=1) {
+  widths = widths.slice();
+  let numRows = minRows(widths, containerWidth);
+  let total = widths.reduce((total,width) => total+width);
 
-  let total = widths.reduce( (carry, width) => carry + width );
-  let passWidth = total/rows;
-  let rowLen = 0;
+  let optimisticWidth = total/numRows;
 
-  return widths.reverse().reduce((bestWidth, width) => {
-    rowLen += width;
-    if(rowLen > passWidth) {
-      let before = rowLen-width;
-      if(before > bestWidth)
-        bestWidth = rowLen;
-      total -= before;
-      rows--;
-      passWidth = total/rows;
-      rowLen = width;
-    }
-    return bestWidth;
-  }, passWidth);
+  let lastValid = containerWidth;
+  let validityCheck = (position) => {
+    let positionNumRows = minRows(widths, position) == numRows;
+    if(positionNumRows) lastValid = position;
+    return positionNumRows;
+  }
+
+  //binary search
+  let left = optimisticWidth;
+  let right = containerWidth;
+  while(greaterEnough(right-left, deltaThreshold)) {
+    let position = left+((right-left)/2);
+    if(validityCheck(position)) right = position;
+    else left = position;
+  }
+
+  return lastValid;
 }
 
 /**
- *  Widths are imagined to be individual rows. A pair of "rows" with the
- *  smallest sum is concatenated until the desired number of rows is
- *  reached, yieldling the smallest widths each row can be.
+ * Pack the given container backwards excluding the property that all elements
+ * are atomic. This starts packing with the most optimistic container width and
+ * grows it while incrementally accomodating the atomic element property.
+ *
+ * O(widths.length)
+ *
+ * Note:
+ * There's nothing that packing this backwards solved compared to packing it
+ * forward, they most likely will come out to be different, but still similar
+ * and innaccurate results. Dividng the rows recursively after designating
+ * a small subset of elements to the next bottom row has the problem of
+ * producing an oversaturated top row since
+ * the algorithm ends with the largest row almost always overflowing.
+ *
+ * @param  {Number[]} widths          widths of adjacent container elements
+ * @param  {Number}   containerWidth  width of the container
+ * @return {Number}                   new width of the container
+ */
+function optimisticBackwardsPack(widths, containerWidth) {
+  widths = widths.slice(); //shallow copy for coolness
+  let numRows = minRows(widths, containerWidth); //find height constraint
+
+  let total = widths.reduce( (total, width) => total + width, 0);
+  let rowLen = 0;
+
+  //get best container width of all rows except the top row
+  let bestWidth = widths.reverse().reduce((bestWidth, width) => {
+    rowLen += width;
+    //cut into own row if current row passes optimistic width
+    if(greaterEnough(rowLen, total/numRows)) {
+      let before = rowLen-width;
+      if(greaterEnough(before, bestWidth))
+        bestWidth = before;
+      total -= before;
+      numRows--;
+      rowLen = width;
+    }
+    return bestWidth;
+  }, total/numRows);
+  //do last check on top row
+  bestWidth = (rowLen > bestWidth) ? rowLen : bestWidth;
+
+  return bestWidth;
+}
+
+/**
+ * Find the smallest sum of adjacent pairs and concatenate them. Repeat until
+ * there are a number of remaining elements, concatenated or otherwise, are
+ * equal to the number of rows under the number of elements and given container
+ * width.
  *
  * O(widths.length^2)
  *
  * Note:
- * suffers from local peaking since these are adjacent sums (greedy), causing
- * there to be much larger summed peaks that don't shift smaller widths to
- * adjacent "rows" that have available space as the algorithm progresses.
+ * There are problems with taking the greediest sum. Taking what is initially
+ * the smallest sum can cause adjacent elements to be starved out of good
+ * minimum candidates that can lead to overall shorter container widths between
+ * the eventual concatenated "rows". It creates a sort of mountaining effect
+ * from which the head and tail of each row can't be shifted into eventual
+ * smaller "rows". Even if they were, the entire order would have to be
+ * reordred non-trivally, meaning the initial ordering by the algorithm would
+ * be entirely useless.
  *
- * @param  {array[int]} widths  widths of adjacent container elements
- * @param  {int}        rows    rows in container
- * @return {int}                minimum container width
+ * @param  {Number[]} widths          widths of adjacent container elements
+ * @param  {Number}   containerWidth  width of the container
+ * @return {Number}                   new width of the container
  */
-function minSumWidthPacker(widths, containerWidth) {
-  let rows = minRows(widths, containerWidth);
+function minSumConcat(widths, containerWidth) {
+  widths = widths.slice(); //shallow copy for coolness
+  let numRows = minRows(widths, containerWidth); //find height constraint
 
-  widths = widths.slice(); //local copy of widths
-  while(widths.length > rows) { //widths.length-rows => O(widths.length)
+  while(widths.length > numRows) { //widths.length-numRows => O(widths.length)
     //find smallest pair of widths
     let smallestPair = {
       pair: [],
       length: widths.reduce((total,width) => total+width)
     }
-    for( let i=1 ; i < widths.length ; i++ ) { //widths.length => O(widths.length)
+    for( let i=1 ; i < widths.length ; i++ ) { //O(widths.length)
       let length = widths[i-1]+widths[i];
       if(length < smallestPair.length) {
         smallestPair.pair = [i-1,i];
@@ -92,85 +211,110 @@ function minSumWidthPacker(widths, containerWidth) {
     widths.splice(smallestPair.pair[0], 2, smallestPair.length);
   }
 
-  console.log(widths);
-  // return the smallest possible container size (i.e. the biggest smallest row width )
-  return widths.reduce((maxWidth, width) => { return (width > maxWidth) ? width : maxWidth; }, 0);
+  // return the largest row
+  return widths.reduce((maxWidth, width) => {
+    return (width > maxWidth) ? width : maxWidth;
+  }, 0);
 }
 
-
 /**
- *  Widths are imagined to be logically already placed in rows if fall
- *  in one of the evenly cut rows. If a row lies on divider if could go
- *  either way. The smallest sums between the undecided widths and logical
- *  rows are decided, yeilding the smallest sums of each row.
+ * Divide elements into the maximum number of rows as if they were non-atomic.
+ * Elements that exist in the same row that share no other rows are
+ * concatenated. The remaining elements, concatenated or otherwise, are then
+ * processed with minSumConcat.
  *
  * O(widths.length^2)
  *
  * Note:
- * This solved the problem of minSumWidthPacker. By making packaged widths
- * that are logically close and smaller than or equal to the minimum row
- * length, the sum of undecided widths and rows produce the global minimum
- * for each row given, reducing the container width to it's true minimum width.
+ * The presuposition that the optimistic cut would put elements into their
+ * natural rows is inaccurate. It mitigates some of the mountaining
+ * minSumConcat was facing by sectioning off more candidates from each row, but
+ * still has to be non-trivially reordred.
  *
- * @param  {array[int]} widths  widths of adjacent container elements
- * @param  {int}        rows    rows in container
- * @return {int}                minimum container width
+ * @param  {Number[]} widths          widths of adjacent container elements
+ * @param  {Number}   containerWidth  width of the container
+ * @return {Number}                   new width of the container
  */
-function evenedMinSumWidthPacker(widths, containerWidth) {
-  let rows = minRows(widths, containerWidth);
+function optimisticMinSumConcat(widths, containerWidth) {
+  widths = widths.slice(); //shallow copy for coolness
+  let numRows = minRows(widths, containerWidth); //find height constraint
 
-  let totalWidth = widths.reduce((total,width) => total+width);
+  let totalWidth = widths.reduce( //O(widths.length)
+    (total,width) => total+width
+  );
 
   let rowWidth = 0;
   let currWidth = 0;
-  let cutStep = totalWidth/rows;
+  let cutStep = totalWidth/numRows;
 
-  let packedWidths = widths.reduce((packedWidths, width) => {
+  //concat all elements that share the same row and don't cross into other rows
+  let packedWidths = widths.reduce((packedWidths, width) => { //O(widths.length)
     rowWidth += width;
     currWidth += width;
-
-    if(equalEnough(currWidth,cutStep)) {
+    /*
+    if row is filled, move current concat row into packedWidths as well as
+    element if it's between two rows
+     */
+    if(equalEnough(currWidth,cutStep)) { //no overflow row fill
       packedWidths.push(rowWidth);
       rowWidth = 0;
-      cutStep = (totalWidth*(Math.floor((currWidth*rows)/totalWidth)+1))/rows;
-    } else if(greaterEnough(currWidth,cutStep)) {
-      if(rowWidth != 0) {
+      cutStep = (totalWidth*(Math.floor((currWidth*numRows)/totalWidth)+1))/numRows;
+    } else if(greaterEnough(currWidth,cutStep)) { //overflow row fill
+      if(rowWidth != 0) { //overflow element shares more than two rows
         packedWidths.push(rowWidth-width);
       }
       packedWidths.push(width);
       rowWidth = 0;
-      cutStep = (totalWidth*(Math.floor((currWidth*rows)/totalWidth)+1))/rows;
+      cutStep = (totalWidth*(Math.floor((currWidth*numRows)/totalWidth)+1))/numRows;
     }
 
     return packedWidths;
   }, []);
 
-  return minSumWidthPacker(packedWidths, rows); //O(width.length^2)
+  return minSumConcat(packedWidths, containerWidth); //O(width.length^2)
 }
 
-function evenedMaxFillWidthPacker(widths, containerWidth) {
-  //even
-  let rows = minRows(widths, containerWidth);
+/**
+ * Divide elements into the maximum number of rows as if they were non-atomic.
+ * Elements that exist in the same row that share no other rows are
+ * concatenated. Elements that exist between multiple rows are inserted from
+ * largest to smallest to it's smallest neighbor. If the neighbors are equal
+ * size, then they are inserted as soon as another one neighbor becomes larger
+ * than another. Effectively trying to even out the optimistic rows.
+ *
+ * O(widths.length^2)
+ *
+ * Note:
+ * This is variant on the last iteration approaches the problem differently,
+ * but the optimistic cut characteristic is now the primary problem. It still
+ * can still have the tail or head of an optimistic row needing to be moved,
+ * causing intial ordering of the algorithm to be useless.
+ *
+ * @param  {Number[]} widths          widths of adjacent container elements
+ * @param  {Number}   containerWidth  width of the container
+ * @return {Number}                   new width of the container
+ */
+function optimisticDependencyEvenFill(widths, containerWidth) {
+  widths = widths.slice(); //shallow copy for coolness
+  let numRows = minRows(widths, containerWidth); //find height constraint
 
   let totalWidth = widths.reduce((total,width) => total+width);
 
-  containerWidth = totalWidth/rows;
+  containerWidth = totalWidth/numRows;
 
   let packedWidths = widths.reduce((pack, width) => {
     let widths = pack.widths;
     let splits = pack.splits;
     let rowWidth = widths[widths.length-1] + width;
-    let prevSplit = pack.overflow//(pack.overflow) ? widths[splits[splits.length-1]] : 0;
+    let prevSplit = pack.prevSplit;
 
     if(greaterEnough(prevSplit+rowWidth,containerWidth)) {
       widths.push(width);
       if(!equalEnough(prevSplit+rowWidth-width, containerWidth)) {
         splits.push(widths.length-1);
-        pack.overflow = (prevSplit+rowWidth)%containerWidth//true;
         widths.push(0);
-      } else {
-        pack.overflow = (prevSplit+rowWidth)%containerWidth//true;
       }
+      pack.prevSplit = (prevSplit+rowWidth)%containerWidth;
     } else {
       widths[widths.length-1] = rowWidth;
     }
@@ -179,26 +323,21 @@ function evenedMaxFillWidthPacker(widths, containerWidth) {
   }, {
     widths: [0],
     splits: [],
-    overflow: 0//false
+    prevSplit: 0
   });
 
   //fill
-  let orderedSplits = packedWidths.splits.slice().sort((a, b) => {
-    return packedWidths.widths[b] - packedWidths.widths[a]
-    // return packedWidths.widths[a] - packedWidths.widths[b]
+  let orderedSplits = packedWidths.splits.sort((a, b) => {
+    return packedWidths.widths[a] - packedWidths.widths[b];
   }); //O(nlogn)
 
+  //setup badSplits
   let badSplits = [];
   for(let i=0; i<packedWidths.widths.length; i++) {
     badSplits.push(false);
   }
 
-  console.log("split");
-  console.log(rows);
-
-  console.log(orderedSplits)
-  console.log(packedWidths.widths);
-
+  //fill according to dependency
   while(orderedSplits.length > 0) {
     let widthIndex = orderedSplits.shift();
     let left = packedWidths.widths[widthIndex-1];
@@ -224,17 +363,12 @@ function evenedMaxFillWidthPacker(widths, containerWidth) {
     packedWidths.widths.splice(index,1);
   });
 
-  console.log(packedWidths.splits);
-  console.log(packedWidths.widths);
-
   return packedWidths.widths.reduce((maxWidth, width) => {
     return (width > maxWidth) ? width : maxWidth;
   }, 0);
 }
 
 /**
- * Complexity: O(n^2)
- *
  * Flood - Shift elements between adjacent rows until no previous row is larger
  *          than a given row in the set, where the elements must remain in
  *          left-to-right order.
@@ -251,6 +385,8 @@ function evenedMaxFillWidthPacker(widths, containerWidth) {
  * taller relative to the previous row excluding it's tail-end or "highest"
  * element. That way each adjacent pair is evened out from left-to-right.
  *
+ * O(widths.length^2)
+ *
  * Note: In the context of finding the most efficient packing width, this
  * suffers from only ever observing adjacent rows. There can be massive drift
  * between non-adjacent rows, where pushing down elements that create a larger
@@ -263,8 +399,7 @@ function evenedMaxFillWidthPacker(widths, containerWidth) {
  */
 function evenFlood(widths, containerWidth) {
   widths = widths.slice(); //shallow copy for coolness
-
-  let numRows = minRows(widths, containerWidth);
+  let numRows = minRows(widths, containerWidth); //find height constraint
 
   //construct potential rows
   let rows = [];
@@ -275,9 +410,7 @@ function evenFlood(widths, containerWidth) {
     });
   }
   rows[0].widths = widths;
-  rows[0].length = widths.reduce(function(total,item) {
-    return total+item;
-  }, 0);
+  rows[0].length = widths.reduce((total,item) => total+item); //O(widths.length)
 
   let rowIndex = 0;
   while(rowIndex >= 0) { //complexity: O(n^2)
@@ -305,22 +438,20 @@ function evenFlood(widths, containerWidth) {
   }, 0);
 }
 
-
 /**
- * complexity: O(n^2)
- *
  * evenFlood(), but with an awareness of non-adjacent row "eveness".
  * This algorithm attempts to create a stable row config, then break the config
  * to favor deconstructing the longest row, and repeat the process until there
  * are no more breaks that can yield a shorter container width.
  *
+ * O(n^2)
+ *
  * @param  {array[float]} widths          widths of adjacent container elements
  * @param  {float}        containerWidth  width of the container
  * @return {float}                        new width of the container
  */
-function chippingEvenFlood(widths, containerWidth) {
+function chipperEvenFlood(widths, containerWidth) {
   widths = widths.slice(); //shallow copy for coolness
-
   let numRows = minRows(widths, containerWidth);
 
   let rows = [];
@@ -336,9 +467,9 @@ function chippingEvenFlood(widths, containerWidth) {
   }, 0);
 
   let rowIndex = 0;
-  while(rowIndex >= 0) { //complexity: O(n^2)
+  while(rowIndex >= 0) { //O(widths.length^2)
     //evenFlood()
-    while(rowIndex >= 0) { //complexity: O(n^2)
+    while(rowIndex >= 0) { //O(widths.length^2)
       let row = rows[rowIndex];
       let lastElement = row.widths[row.widths.length-1];
       let nextRow = rows[rowIndex+1];
@@ -365,7 +496,7 @@ function chippingEvenFlood(widths, containerWidth) {
     breaks without creaking unbreakable future peaks.
     Note: Exploring all breaks may be inefficient, explore further.
      */
-    let longestIndex = rows.reduce((max, row, index) => { //complexity: O(n)
+    let longestIndex = rows.reduce((max, row, index) => { //O(widths.length)
       return (rows[max].length < row.length) ? index : max;
     }, 0);
     //the least pair must be shorter than the longest row
@@ -374,7 +505,7 @@ function chippingEvenFlood(widths, containerWidth) {
       length: rows[longestIndex].length
     };
     //find least pair under the longest row
-    for(let i=longestIndex+1; i<rows.length; i++) { //complexity: O(n)
+    for(let i=longestIndex+1; i<rows.length; i++) { //O(widths.length)
       let length = rows[i-1].widths[rows[i-1].widths.length-1]+rows[i].length;
       if(length < least.length) {
         least.pair = [i-1,i];
@@ -392,7 +523,7 @@ function chippingEvenFlood(widths, containerWidth) {
     }
   }
 
-  //return
+  //return largest row in configuration
   return rows.reduce(function(max, row) {
     return (max < row.length) ? row.length : max;
   }, 0);
@@ -412,13 +543,13 @@ function pack(container, widthPackerMethod) {
 
   let childrenWidths = [...children].map(element => {
     let childWidth = element.getBoundingClientRect().width;
-    let childMargin = extractPropertyValue(element, 'margin-left') +
-                      extractPropertyValue(element, 'margin-right');
-    return childWidth+childMargin;
+    let childMargin = extractPropertyNumber(element, 'margin-left') +
+                      extractPropertyNumber(element, 'margin-right');
+    return childWidth + childMargin;
   });
 
-  let containerPadding =  extractPropertyValue(container, 'padding-left') +
-                          extractPropertyValue(container, 'padding-right');
+  let containerPadding =  extractPropertyNumber(container, 'padding-left') +
+                          extractPropertyNumber(container, 'padding-right');
 
   let packWidth = widthPackerMethod(
     childrenWidths,
@@ -434,11 +565,10 @@ function pack(container, widthPackerMethod) {
  * @param  {Object} event the resize event
  */
 function repackAll(event) {
-  console.log('a')
   let containers = document.getElementsByClassName("packing");
 
   [...containers].forEach((container) => {
-    pack(container, chippingEvenFlood);
+    pack(container, chipperEvenFlood); //default: chipperEvenFlood
   });
 }
 
@@ -446,12 +576,11 @@ function repackAll(event) {
 //valid hack, use it if you dont want jumpy layout on load
 repackAll();
 
-
 //repackscreen is resized
-if(!packingResizeTimer) { //init packingResizeTimer if there currently isn't one
+if(!packingResizeTimer) {
   var packingResizeTimer;
 }
 window.addEventListener("resize", function(e) {
   clearTimeout(packingResizeTimer);
-  packingResizeTimer = setTimeout(repackAll,100); //resize on timer to reduce
+  packingResizeTimer = setTimeout(repackAll, 100); //default: 100
 });
