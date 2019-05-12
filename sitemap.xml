@@ -4,8 +4,13 @@
   
   <url>
     <loc>https://demogorgonzola.io/</loc>
-    <lastmod>2019-04-03T19:51:33-06:00</lastmod>
+    <lastmod>2019-05-11T23:06:11-06:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://demogorgonzola.io/resume/</loc>
+    <lastmod>2019-05-11T23:06:11-06:00</lastmod>
   </url>
   
   <url>
@@ -55,10 +60,6 @@
   <url>
     <loc>https://demogorgonzola.io/categories/</loc>
     <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://demogorgonzola.io/resume/</loc>
   </url>
   
   <url>

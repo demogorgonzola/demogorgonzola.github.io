@@ -5,10 +5,26 @@
     <link>https://demogorgonzola.io/</link>
     <description>Recent content on 9th lvl Truestrike</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 03 Apr 2019 19:51:33 -0600</lastBuildDate>
+    <lastBuildDate>Sat, 11 May 2019 23:06:11 -0600</lastBuildDate>
     
 	<atom:link href="https://demogorgonzola.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Resume</title>
+      <link>https://demogorgonzola.io/resume/</link>
+      <pubDate>Sat, 11 May 2019 23:06:11 -0600</pubDate>
+      
+      <guid>https://demogorgonzola.io/resume/</guid>
+      <description>Objective ===
+Rapidly produce iterative solutions for any kind of software through meticulous research and decisive strategy.
+======
+Education ===
+Colorado State University December 2014  Bachelors of Science in Computer Science, minor in Mathematics
+(Major: 3.0, Minor: 3.4) ======
+Experience ===
+Conscious Cleanse Jun - Nov 2018 RaddCreative, Fort Collins, Colorado   Subscription-based Checkout Solution backed by a Ember-based frontend and processed though a WooCommerce server module. Site-wide Journaling Widget built with an in-house version of a theoretical Ember feature, Routable Components.</description>
+    </item>
     
     <item>
       <title>Drifting Card Algorithm</title>
@@ -45,22 +61,6 @@
       
       <guid>https://demogorgonzola.io/docs/my-first-post/</guid>
       <description>Hi this is testing</description>
-    </item>
-    
-    <item>
-      <title>Resume</title>
-      <link>https://demogorgonzola.io/resume/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://demogorgonzola.io/resume/</guid>
-      <description>Objective ===
-Rapidly produce iterative solutions for any kind of software through meticulous research and decisive strategy.
-======
-Education ===
-Colorado State University December 2014  Bachelors of Science in Computer Science, minor in Mathematics
-(Major: 3.0, Minor: 3.4) ======
-Experience ===
-Conscious Cleanse Jun - Nov 2018 RaddCreative, Fort Collins, Colorado   Subscription-based Checkout Solution backed by a Ember-based frontend and processed though a WooCommerce server module. Site-wide Journaling Widget built with an in-house version of a theoretical Ember feature, Routable Components.</description>
     </item>
     
   </channel>
