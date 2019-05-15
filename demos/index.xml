@@ -5,10 +5,20 @@
     <link>https://demogorgonzola.io/demos/</link>
     <description>Recent content in Demos on 9th lvl Truestrike</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 03 Apr 2019 19:51:33 -0600</lastBuildDate>
+    <lastBuildDate>Sun, 12 May 2019 14:06:33 -0600</lastBuildDate>
     
 	<atom:link href="https://demogorgonzola.io/demos/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Crate Trimmer Algorithm</title>
+      <link>https://demogorgonzola.io/demos/crate-trimmer/</link>
+      <pubDate>Sun, 12 May 2019 14:06:33 -0600</pubDate>
+      
+      <guid>https://demogorgonzola.io/demos/crate-trimmer/</guid>
+      <description>What is the most efficient width a container can pack it&amp;rsquo;s elements under the constraints that&amp;hellip;
+ Elements are atomic Elements retain their order Container height is immutable  Algorithms under these conditions have the strong possibility of being greedy. Reasoned since the first obvious, though aproximal solution, is to do a binary search between the non-atomic optimal width and the given container width with a non-decimal delta threshold (1px).</description>
+    </item>
     
     <item>
       <title>Drifting Card Algorithm</title>
@@ -16,7 +26,7 @@
       <pubDate>Wed, 03 Apr 2019 19:51:33 -0600</pubDate>
       
       <guid>https://demogorgonzola.io/demos/drifting-cards/</guid>
-      <description>  .entry-content::after { /* keep floating content in flow, have div respond */ content: &#34;&#34;; clear: both; display: table; } #demo { display: inline; float: right; }     Aim: To have cards drift to a predefined grid point while under the criteria of: Have no crossing paths </description>
+      <description> --.entry-content::after { /* keep floating content in flow, have div respond */content: &#34;&#34;;clear: both;display: table;}#demo {display: inline;float: right;}Aim: To have cards drift to a predefined grid point while under the criteria of:Have no crossing paths --</description>
     </item>
     
   </channel>
